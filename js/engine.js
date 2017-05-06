@@ -19,11 +19,12 @@ var Engine = (function(global) {
         win = global.window,
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
+        rqfId = null,
         lastTime;
 
     canvas.width = 505;
     canvas.height = 606;
-    doc.body.appendChild(canvas);
+    utils.$el("box").appendChild(canvas);
 
     /* 这个函数是整个游戏的主入口，负责适当的调用 update / render 函数 */
     function main() {
@@ -34,7 +35,7 @@ var Engine = (function(global) {
         var now = Date.now(),
             dt = (now - lastTime) / 1000.0;
 		
-        /* 调用我们的 update / render 函数， 传递事件间隙给 update 函数因为这样
+        /* 调用我们的 update / render 函数， 传递时间间隙给 update 函数因为这样
          * 可以使动画更加顺畅。
          */
         update(dt);
@@ -46,7 +47,7 @@ var Engine = (function(global) {
         /* 在浏览准备好调用重绘下一个帧的时候，用浏览器的 requestAnimationFrame 函数
          * 来调用这个函数
          */
-        win.requestAnimationFrame(main);
+        global.rqfId = win.requestAnimationFrame(main);
     }
 
     /* 这个函数调用一些初始化工作，特别是设置游戏必须的 lastTime 变量，这些工作只用
@@ -55,7 +56,22 @@ var Engine = (function(global) {
     function init() {
         reset();
         lastTime = Date.now();
+        progress.resetScore();
         main();
+    }
+
+    /* 
+     * 刚进来未开始游戏
+     */
+    function initWork(){
+        reset();
+        progress.resetScore();
+        lastTime = Date.now();
+        var now = Date.now(),
+            dt = (now - lastTime) / 1000.0;
+        update(dt);
+        render();
+        lastTime = now;
     }
 
     /* 这个函数被 main 函数（我们的游戏主循环）调用，它本身调用所有的需要更新游戏角色
@@ -73,10 +89,10 @@ var Engine = (function(global) {
      * 这些更新函数应该只聚焦于更新和对象相关的数据/属性。把重绘的工作交给 render 函数。
      */
     function updateEntities(dt) {
-//      allEnemies.forEach(function(enemy) {
-//          enemy.update(dt);
-//      });
-//      player.update();
+         allEnemies.forEach(function(enemy) {
+             enemy.update(dt);
+         });
+        player.update();
     }
 
     /* 这个函数做了一些游戏的初始渲染，然后调用 renderEntities 函数。记住，这个函数
@@ -117,11 +133,11 @@ var Engine = (function(global) {
      */
     function renderEntities() {
         /* 遍历在 allEnemies 数组中存放的作于对象然后调用你事先定义的 render 函数 */
-        /*allEnemies.forEach(function(enemy) {
+        allEnemies.forEach(function(enemy) {
             enemy.render();
         });
 
-        player.render(); */
+        player.render(); 
     }
 
     /* 这个函数现在没干任何事，但是这会是一个好地方让你来处理游戏重置的逻辑。可能是一个
@@ -131,6 +147,7 @@ var Engine = (function(global) {
     function reset() {
         // 空操作
     }
+    
 
     /* 紧接着我们来加载我们知道的需要来绘制我们游戏关卡的图片。然后把 init 方法设置为回调函数。
      * 那么党这些图片都已经加载完毕的时候游戏就会开始。
@@ -142,10 +159,11 @@ var Engine = (function(global) {
         'images/enemy-bug.png',
         'images/char-boy.png'
     ]);
-    Resources.onReady(init);
+    Resources.onReady(initWork);
 
     /* 把 canvas 上下文对象绑定在 global 全局变量上（在浏览器运行的时候就是 window
      * 对象。从而开发者就可以在他们的app.js文件里面更容易的使用它。
      */
     global.ctx = ctx;
+    global.init = init;
 })(this);

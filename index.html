@@ -2,10 +2,26 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Effective JavaScript: Frogger</title>
+    <title>ArcadeGame</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+	
+	<div class="high-record">
+		<h3>目前最高纪录：</h3>
+		<h3 class="" id="hightRecord"></h3>
+	</div>
+
+	<div id="box">
+		<span class="score-wrapper">分数:
+			<span class="score" id="youScore"></span>
+			<button type="button" class="g-Btn" id="startBtn">开始游戏</button>
+			<button type="button" class="g-Btn active" id="normalBtn">普通模式</button>
+			<button type="button" class="g-Btn" id="nohopeBtn">绝望模式</button>
+		</span>
+	</div>
+
+	<script src="js/utils.js"></script>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
