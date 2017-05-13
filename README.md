@@ -14,7 +14,7 @@
 [游戏链接](http://heliujie.com/public/works/arcadegame/index.html)
 
 ### 游戏界面
-<img src="https://gitlab.com/heliujie/arcade_game/raw/master/images/game.png" width = "700" height = "700" alt="图片名称" align=center />
+<img src="https://github.com/stupidWall/arcade_game/blob/master/images/game.png" width = "700" height = "700" alt="图片名称" align=center />
 
 ### 碰撞检测分析 
-<img src="https://gitlab.com/heliujie/arcade_game/raw/master/images/pz.png" width = "700" height = "400" alt="图片名称" align=center />
+<img src="https://github.com/stupidWall/arcade_game/blob/master/images/pz.png" width = "700" height = "400" alt="图片名称" align=center />
